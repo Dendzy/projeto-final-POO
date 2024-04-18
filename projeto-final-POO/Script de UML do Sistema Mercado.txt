@@ -1,0 +1,104 @@
+@startuml
+class Cliente {
+    - nome: String
+    - cpf: String
+    - endereco: String
+    - carrinho: Carrinho
+    
+    + Cliente(nome: String, cpf: String, endereco: String, carrinho: Carrinho)
+    + getNome(): String
+    + getCpf(): String
+    + getEndereco(): String
+    + getCarrinho(): Carrinho
+    + setNome(nome: String): void
+    + setEndereco(endereco: String): void
+    + setCarrinho(carrinho: Carrinho): void
+}
+class Estoque {
+    - produtos: HashMap<Produto>
+    + adicionarProduto(int id)
+    + removerProduto(int id)
+}
+
+class Carrinho {
+    - produtos: HashMap<Produto>
+    - valorTotal: double
+    
+    + Carrinho()
+    + getProdutos(): HashMap<Produto>
+    + setProdutos(produtos: HashMap<Produto>): void
+    + getValorTotal(): double
+    + setValorTotal(valorTotal: double): void
+}
+
+class Produto {
+    - tipo: TipoProduto
+    - id: int
+    - nome: String
+    - preco: double
+    
+    + getTipo(): TipoProduto
+    + setTipo(tipo: TipoProduto): void
+    + getId(): int
+    + setId(id: int): void
+    + getNome(): String
+    + setNome(nome: String): void
+    + getPreco(): double
+    + setPreco(preco: double): void
+}
+
+interface MercadoInterface {
+    + cadastrarCliente(cliente: Cliente): void
+    + removerCliente(cpf: String): void
+    + editarCliente(cpf: String): void
+    + adicionarAoCarrinho(cliente: Cliente): void
+    + removerDoCarrinho(cliente: Cliente): void
+    + adicionarAoEstoque(idProduto: int): void
+    + removerDoEstoque(idProduto: int): void
+    + fecharPedido(cliente: Cliente): void
+}
+
+class SistemaMercado {
+    - estoque: Estoque
+    - clientes: HashMap<String, Cliente>
+    - pedidos: HashMap<Integer, Pedido>
+    
+    + cadastrarCliente(cliente: Cliente): void
+    + removerCliente(cpf: String): void
+    + editarCliente(cpf: String): void
+    + adicionarAoCarrinho(cliente: Cliente): void
+    + removerDoCarrinho(cliente: Cliente): void
+    + adicionarAoEstoque(idProduto: int): void
+    + removerDoEstoque(idProduto: int): void
+    + fecharPedido(cliente: Cliente): void
+}
+
+class Pedido {
+    - codigo: int
+    - cliente: Cliente
+    - carrinhoDoCliente: Carrinho
+    - data: DateTime
+    - valorTotal: double
+    
+    + getCodigo(): int
+    + setCodigo(codigo: int): void
+    + getCliente(): Cliente
+    + setCliente(cliente: Cliente): void
+    + getCarrinhoDoCliente(): Carrinho
+    + setCarrinhoDoCliente(carrinho: Carrinho): void
+    + getData(): DateTime
+    + setData(data: DateTime): void
+    + getValorTotal(): double
+    + setValorTotal(valorTotal: double): void
+}
+
+SistemaMercado ..|> MercadoInterface
+Cliente -- Carrinho
+Carrinho "1" -- "0..*" Produto
+Pedido "1" -- "1" Cliente
+Pedido "1" -- "1" Carrinho
+Estoque "1" -- "0..*" Produto
+SistemaMercado "1" -- "0..*" Cliente
+SistemaMercado "1" -- "0..*" Pedido
+SistemaMercado "1" -- "1" Estoque
+@enduml
