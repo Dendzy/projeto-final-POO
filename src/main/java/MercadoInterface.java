@@ -1,17 +1,17 @@
 public interface MercadoInterface {
-    void cadastrarCliente(Cliente cliente);
+    void cadastrarCliente(String nome, String cpf, String enderco, Carrinho carrinho);
 
     void removerCliente(String cpf);
 
-    void editarCliente(String cpf);
+    void editarCliente(String cpf, String novoNome, String novoEnderco);
 
-    void adicionarAoCarrinho(Cliente cliente);
+    void adicionarAoCarrinho(String cpf, int idProduto);
 
-    void removerDoCarrinho(Cliente cliente);
+    void removerDoCarrinho(String cpf, int idProduto);
 
     void adicionarAoEstoque(int idProduto);
 
     void removerDoEstoque(int idProduto);
 
-    void fecharPedido(Cliente cliente);
+    void fecharPedido(String cpf);
 }

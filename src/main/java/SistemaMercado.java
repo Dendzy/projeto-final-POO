@@ -8,7 +8,7 @@ public class SistemaMercado implements MercadoInterface{
 
 
     @Override
-    public void cadastrarCliente(Cliente cliente) {
+    public void cadastrarCliente(String nome, String cpf, String enderco, Carrinho carrinho) {
 
     }
 
@@ -18,17 +18,17 @@ public class SistemaMercado implements MercadoInterface{
     }
 
     @Override
-    public void editarCliente(String cpf) {
+    public void editarCliente(String cpf, String novoNome, String novoEnderco) {
 
     }
 
     @Override
-    public void adicionarAoCarrinho(Cliente cliente) {
+    public void adicionarAoCarrinho(String cpf, int idProduto) {
 
     }
 
     @Override
-    public void removerDoCarrinho(Cliente cliente) {
+    public void removerDoCarrinho(String cpf, int idProduto) {
 
     }
 
@@ -43,7 +43,7 @@ public class SistemaMercado implements MercadoInterface{
     }
 
     @Override
-    public void fecharPedido(Cliente cliente) {
+    public void fecharPedido(String cpf) {
 
     }
 }

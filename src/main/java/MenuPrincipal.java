@@ -10,7 +10,6 @@ public class MenuPrincipal extends JFrame implements ActionListener {
         setSize(800, 550);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-
         JPanel panel = new JPanel(null);
 
 
@@ -50,6 +49,14 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 
         clienteButton.addActionListener(this);
         gerenteButton.addActionListener(this);
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+        JMenu cliente = new JMenu("Cliente");
+        JMenu gerente = new JMenu("Gerente");
+        cliente.addActionListener(e -> new ClienteController());
+        gerente.addActionListener(e -> new GerenteController());
+        menuBar.add(cliente);
+        menuBar.add(gerente);
 
         setVisible(true);
     }
