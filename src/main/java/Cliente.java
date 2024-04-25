@@ -1,14 +1,19 @@
 public class Cliente {
     private String nome;
     private String cpf;
+    private String senha;
     private String endereco;
     private Carrinho carrinho;
 
-    public Cliente(String nome, String cpf, String endereco, Carrinho carrinho) {
+    public Cliente(String nome, String cpf, String senha, String endereco, Carrinho carrinho) {
         this.nome = nome;
         this.cpf = cpf;
         this.endereco = endereco;
         this.carrinho = carrinho;
+    }
+
+    public void adicionarAoCarrinho(Produto produto){
+        carrinho.adicionar(produto);
     }
 
     public String getNome() {

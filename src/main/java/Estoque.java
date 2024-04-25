@@ -8,11 +8,7 @@ public class Estoque {
         produtos = new HashMap<>();
     }
 
-    public void adicionarProduto(Produto p) throws ProdutoJaNoEstoqueException{
-        if(produtos.containsKey(p.getId()))
-            throw new ProdutoJaNoEstoqueException("O produto "+ p.getNome()+
-                    " já cadastrado no sistema");
-
+    public void adicionarProduto(Produto p){
         produtos.put(p.getId(), p);
     }
 
@@ -23,4 +19,10 @@ public class Estoque {
 
         produtos.remove(p.getId());
     }
+
+    public Produto pegarProduto(int idProduto) throws ProdutoNaoEncontradoException{
+        if(!produtos.containsKey(idProduto)) throw new ProdutoNaoEncontradoException("Produto não existe no Estoque!");
+        return produtos.get(idProduto);
+    }
+
 }
