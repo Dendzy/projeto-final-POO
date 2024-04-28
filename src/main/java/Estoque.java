@@ -13,7 +13,7 @@ public class Estoque {
     }
 
     public void removerProduto(Produto p) throws ProdutoNaoEncontradoException{
-        if(!produtos.containsKey(p.getId()))
+       if(!existeProdutoNoEstoque(p.getNome()))
             throw new ProdutoNaoEncontradoException("O produto " +p.getNome()+
                     " não foi encontrado no estoque");
 
@@ -21,8 +21,20 @@ public class Estoque {
     }
 
     public Produto pegarProduto(int idProduto) throws ProdutoNaoEncontradoException{
-        if(!produtos.containsKey(idProduto)) throw new ProdutoNaoEncontradoException("Produto não existe no Estoque!");
+        if(!produtos.containsKey(idProduto)) throw new ProdutoNaoEncontradoException("Produto de id "+idProduto+" não existe no Estoque!");
         return produtos.get(idProduto);
     }
 
+    public boolean existeProdutoNoEstoque(String nomeProduto) {
+       for(Produto p: this.produtos.values()){
+           if(p.getNome().equals(nomeProduto)){
+               return true;
+           }
+       }
+       return false;
+    }
+
+    public Map<Integer, Produto> getProdutos() {
+        return produtos;
+    }
 }

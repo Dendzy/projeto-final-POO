@@ -13,9 +13,13 @@ public interface MercadoInterface {
 
     void removerDoCarrinho(String cpf, int idProduto);
 
+    Carrinho verCarrinhoDoCliente(String cpf);
+
     void adicionarAoEstoque(TipoProduto tipo, String nome, double preco);
 
     void removerDoEstoque(int idProduto);
+
+    boolean produtoExisteNoEstoque(String nomeProduto);
 
     void fecharPedido(String cpf);
 }

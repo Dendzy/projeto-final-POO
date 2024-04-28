@@ -10,9 +10,11 @@ public class testaSistema {
 
     SistemaMercado sistema;
 
+
     @BeforeEach
     void setUp() {
         sistema = new SistemaMercado();
+
     }
 
     @Test
@@ -43,15 +45,60 @@ public class testaSistema {
     }
 
     @Test
+    void testaAdicionarAoEstoque() {
+        try {
+            sistema.cadastrarCliente("Roberto", "354", "arroz", "82749", new Carrinho());
+            sistema.adicionarAoEstoque(TipoProduto.AUDIO, "microfone", 100);
+            assertTrue(sistema.produtoExisteNoEstoque("microfone"));
+            sistema.adicionarAoEstoque(TipoProduto.CONSOLE, "xbox", 3000);
+            assertTrue(sistema.produtoExisteNoEstoque("xbox"));
+        } catch (ClienteJaCadastradoException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void testaRemoverDoEstoque(){
+        try {
+            sistema.cadastrarCliente("Louise", "082", "Bela", "127632", new Carrinho());
+            sistema.adicionarAoEstoque(TipoProduto.GAMER, "monitor", 999);
+            assertTrue(sistema.produtoExisteNoEstoque("monitor"));
+            sistema.adicionarAoEstoque(TipoProduto.CONSOLE, "nintendo switch", 2200);
+            assertTrue(sistema.produtoExisteNoEstoque("nintendo switch"));
+            Estoque estoque = sistema.getEstoque();
+            for(Produto p: estoque.getProdutos().values()){
+                System.out.println(p);
+            }
+            sistema.removerDoEstoque(3);
+            assertFalse(sistema.produtoExisteNoEstoque("monitor"));
+            sistema.removerDoEstoque(4);
+            for(Produto p: estoque.getProdutos().values()){
+                System.out.println(p);
+            }
+            assertFalse(sistema.produtoExisteNoEstoque("nintendo switch"));
+        } catch (ClienteJaCadastradoException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    @Test
     void testaAdicionarAoCarrinho() {
-        try{
+        try {
             sistema.cadastrarCliente("Luiz", "054", "catupiry", "58102", new Carrinho());
-            sistema.adicionarAoEstoque(TipoProduto.AUDIO,"fone",20);
-            sistema.adicionarAoEstoque(TipoProduto.CONSOLE,"ps4",5000);
-            sistema.adicionarAoCarrinho("054",1);
-
-
-        }catch(ClienteJaCadastradoException e){
+            sistema.adicionarAoEstoque(TipoProduto.AUDIO, "fone", 20);
+            assertTrue(sistema.produtoExisteNoEstoque("fone"));
+            sistema.adicionarAoEstoque(TipoProduto.CONSOLE, "ps4", 5000);
+            assertTrue(sistema.produtoExisteNoEstoque("ps4"));
+            sistema.adicionarAoCarrinho("054", 1);
+            sistema.adicionarAoCarrinho("054", 2);
+            assertEquals("fone", sistema.verCarrinhoDoCliente("054").getProdutos().get(0).getNome());
+            assertEquals("ps4", sistema.verCarrinhoDoCliente("054").getProdutos().get(1).getNome());
+            Estoque estoque = sistema.getEstoque();
+            for(Produto p: estoque.getProdutos().values()){
+                System.out.println(p);
+            }
+        } catch (ClienteJaCadastradoException e) {
             System.out.println(e.getMessage());
         }
     }
