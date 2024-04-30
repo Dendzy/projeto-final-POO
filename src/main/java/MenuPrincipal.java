@@ -1,3 +1,6 @@
+import guicontrollers.ClienteController;
+import guicontrollers.GerenteController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

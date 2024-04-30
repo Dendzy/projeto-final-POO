@@ -8,6 +8,7 @@ public class Cliente {
     public Cliente(String nome, String cpf, String senha, String endereco, Carrinho carrinho) {
         this.nome = nome;
         this.cpf = cpf;
+        this.senha = senha;
         this.endereco = endereco;
         this.carrinho = carrinho;
     }

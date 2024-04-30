@@ -76,9 +76,10 @@ public class SistemaMercado implements MercadoInterface {
     }
 
     @Override
-    public void adicionarAoEstoque(TipoProduto tipo, String nome, double preco) {
+    public int adicionarAoEstoque(TipoProduto tipo, String nome, double preco) {
         Produto novoProduto = new Produto(tipo, nome, preco);
         estoque.adicionarProduto(novoProduto);
+        return novoProduto.getId();
     }
 
     @Override

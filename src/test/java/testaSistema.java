@@ -77,15 +77,15 @@ public class testaSistema {
     void testaRemoverDoEstoque(){
         try {
             sistema.cadastrarCliente("Louise", "082", "Bela", "127632", new Carrinho());
-            sistema.adicionarAoEstoque(TipoProduto.GAMER, "monitor", 999);
-            sistema.adicionarAoEstoque(TipoProduto.CONSOLE, "nintendo switch", 2200);
+            int p1ID = sistema.adicionarAoEstoque(TipoProduto.GAMER, "monitor", 999);
+            int p2ID = sistema.adicionarAoEstoque(TipoProduto.CONSOLE, "nintendo switch", 2200);
             Estoque estoque = sistema.getEstoque();
             for(Produto p: estoque.getProdutos().values()){
                 System.out.println(p);
             }
-            sistema.removerDoEstoque(3);
+            sistema.removerDoEstoque(p1ID);
             assertFalse(sistema.produtoExisteNoEstoque("monitor"));
-            sistema.removerDoEstoque(4);
+            sistema.removerDoEstoque(p2ID);
             for(Produto p: estoque.getProdutos().values()){
                 System.out.println(p);
             }
@@ -100,10 +100,10 @@ public class testaSistema {
     void testaAdicionarAoCarrinho() {
         try {
             sistema.cadastrarCliente("Luiz", "054", "catupiry", "58102", new Carrinho());
-            sistema.adicionarAoEstoque(TipoProduto.AUDIO, "fone", 20);
-            sistema.adicionarAoEstoque(TipoProduto.CONSOLE, "ps4", 5000);
-            sistema.adicionarAoCarrinho("054", 1);
-            sistema.adicionarAoCarrinho("054", 2);
+            int p1ID = sistema.adicionarAoEstoque(TipoProduto.AUDIO, "fone", 20);
+            int p2ID = sistema.adicionarAoEstoque(TipoProduto.CONSOLE, "ps4", 5000);
+            sistema.adicionarAoCarrinho("054", p1ID);
+            sistema.adicionarAoCarrinho("054", p2ID);
             assertEquals("fone", sistema.verCarrinhoDoCliente("054").getProdutos().get(0).getNome());
             assertEquals("ps4", sistema.verCarrinhoDoCliente("054").getProdutos().get(1).getNome());
             Estoque estoque = sistema.getEstoque();
@@ -119,8 +119,8 @@ public class testaSistema {
     void testaRemoverDoCarrinho() {
         try {
             sistema.cadastrarCliente("Luiz", "054", "catupiry", "58102", new Carrinho());
-            sistema.adicionarAoEstoque(TipoProduto.AUDIO, "fone", 20);
-            sistema.removerDoCarrinho("054",1);
+            int p1ID = sistema.adicionarAoEstoque(TipoProduto.AUDIO, "fone", 20);
+            sistema.removerDoCarrinho("054",p1ID);
             assertTrue(sistema.verCarrinhoDoCliente("054").getProdutos().size() == 0);
         } catch (ClienteJaCadastradoException e) {
             fail("Essa exceção não deveria ser lançada!");

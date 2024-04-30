@@ -15,7 +15,7 @@ public interface MercadoInterface {
 
     Carrinho verCarrinhoDoCliente(String cpf);
 
-    void adicionarAoEstoque(TipoProduto tipo, String nome, double preco);
+    int adicionarAoEstoque(TipoProduto tipo, String nome, double preco);
 
     void removerDoEstoque(int idProduto);
 
