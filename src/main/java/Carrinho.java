@@ -12,6 +12,10 @@ public class Carrinho {
         produtos.add(p);
     }
 
+    public void remover(Produto p) {
+        produtos.remove(p);
+    }
+
     public List<Produto> getProdutos() {
         return produtos;
     }

@@ -27,7 +27,7 @@ public class testaSistema {
             assertThrows(ClienteJaCadastradoException.class, () ->
                     sistema.cadastrarCliente("", "054", "catupiry", "", new Carrinho()));
         } catch (ClienteJaCadastradoException | ClienteNaoExisteException e) {
-            System.out.println(e.getMessage());
+            fail("Nenhuma dessas exceções deveria ser lançada!");
         }
     }
 
@@ -40,7 +40,23 @@ public class testaSistema {
                 sistema.removerCliente("122");
             });
         } catch (ClienteJaCadastradoException e) {
-            System.out.println(e.getMessage());
+            fail("Essa exceção não deveria ser lançada!");
+        }
+    }
+
+    @Test
+    void testaEditarCliente() {
+        try {
+            sistema.cadastrarCliente("Jose", "2025", "yago", "200", new Carrinho());
+            sistema.editarCliente("2025","ana","barao");
+            Cliente c = sistema.pesquisarCliente("2025");
+            assertFalse(c.getNome().equals("Jose"));
+            assertFalse(c.getEndereco().equals("200"));
+            assertTrue(c.getNome().equals("ana"));
+            assertTrue(c.getEndereco().equals("barao"));
+            assertThrows(ClienteNaoExisteException.class, () -> sistema.editarCliente("12586","a","b"));
+        } catch (ClienteNaoExisteException | ClienteJaCadastradoException e) {
+            fail("Nenhuma dessas exceções deveria ser lançada!");
         }
     }
 
@@ -53,7 +69,7 @@ public class testaSistema {
             sistema.adicionarAoEstoque(TipoProduto.CONSOLE, "xbox", 3000);
             assertTrue(sistema.produtoExisteNoEstoque("xbox"));
         } catch (ClienteJaCadastradoException e) {
-            System.out.println(e.getMessage());
+            fail("Essa exceção não deveria ser lançada!");
         }
     }
 
@@ -62,9 +78,7 @@ public class testaSistema {
         try {
             sistema.cadastrarCliente("Louise", "082", "Bela", "127632", new Carrinho());
             sistema.adicionarAoEstoque(TipoProduto.GAMER, "monitor", 999);
-            assertTrue(sistema.produtoExisteNoEstoque("monitor"));
             sistema.adicionarAoEstoque(TipoProduto.CONSOLE, "nintendo switch", 2200);
-            assertTrue(sistema.produtoExisteNoEstoque("nintendo switch"));
             Estoque estoque = sistema.getEstoque();
             for(Produto p: estoque.getProdutos().values()){
                 System.out.println(p);
@@ -77,7 +91,7 @@ public class testaSistema {
             }
             assertFalse(sistema.produtoExisteNoEstoque("nintendo switch"));
         } catch (ClienteJaCadastradoException e) {
-            System.out.println(e.getMessage());
+            fail("Essa exceção não deveria ser lançada!");
         }
 
     }
@@ -87,9 +101,7 @@ public class testaSistema {
         try {
             sistema.cadastrarCliente("Luiz", "054", "catupiry", "58102", new Carrinho());
             sistema.adicionarAoEstoque(TipoProduto.AUDIO, "fone", 20);
-            assertTrue(sistema.produtoExisteNoEstoque("fone"));
             sistema.adicionarAoEstoque(TipoProduto.CONSOLE, "ps4", 5000);
-            assertTrue(sistema.produtoExisteNoEstoque("ps4"));
             sistema.adicionarAoCarrinho("054", 1);
             sistema.adicionarAoCarrinho("054", 2);
             assertEquals("fone", sistema.verCarrinhoDoCliente("054").getProdutos().get(0).getNome());
@@ -99,7 +111,19 @@ public class testaSistema {
                 System.out.println(p);
             }
         } catch (ClienteJaCadastradoException e) {
-            System.out.println(e.getMessage());
+            fail("Essa exceção não deveria ser lançada!");
+        }
+    }
+
+    @Test
+    void testaRemoverDoCarrinho() {
+        try {
+            sistema.cadastrarCliente("Luiz", "054", "catupiry", "58102", new Carrinho());
+            sistema.adicionarAoEstoque(TipoProduto.AUDIO, "fone", 20);
+            sistema.removerDoCarrinho("054",1);
+            assertTrue(sistema.verCarrinhoDoCliente("054").getProdutos().size() == 0);
+        } catch (ClienteJaCadastradoException e) {
+            fail("Essa exceção não deveria ser lançada!");
         }
     }
 }

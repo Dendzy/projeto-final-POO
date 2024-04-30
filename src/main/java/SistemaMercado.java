@@ -26,22 +26,22 @@ public class SistemaMercado implements MercadoInterface {
 
     @Override
     public Cliente pesquisarCliente(String cpf) throws ClienteNaoExisteException {
-        if (clientes.containsKey(cpf)) return clientes.get(cpf);
-        throw new ClienteNaoExisteException("Cliente não existe!");
+        if (!clientes.containsKey(cpf)) throw new ClienteNaoExisteException("Cliente não existe!");
+        return clientes.get(cpf);
     }
 
     @Override
     public void removerCliente(String cpf) throws ClienteNaoExisteException {
-        if (clientes.containsKey(cpf)) {
-            clientes.remove(cpf);
-            return;
-        }
-        throw new ClienteNaoExisteException("Cliente não existe!");
+        if(!clientes.containsKey(cpf)) throw new ClienteNaoExisteException("Cliente não existe!");
+        clientes.remove(cpf);
     }
 
     @Override
-    public void editarCliente(String cpf, String novoNome, String novoEnderco) {
-
+    public void editarCliente(String cpf, String novoNome, String novoEnderco) throws ClienteNaoExisteException{
+        if(!clientes.containsKey(cpf)) throw new ClienteNaoExisteException("Cliente não existe!");
+        Cliente clienteParaEditar = clientes.get(cpf);
+        clienteParaEditar.setNome(novoNome);
+        clienteParaEditar.setEndereco(novoEnderco);
     }
 
     @Override
@@ -55,12 +55,19 @@ public class SistemaMercado implements MercadoInterface {
         } catch (ProdutoNaoEncontradoException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     @Override
     public void removerDoCarrinho(String cpf, int idProduto) {
-
+        try {
+            Produto p = estoque.pegarProduto(idProduto);
+            Carrinho carrinho = new Carrinho();
+            if (carrinhos.containsKey(cpf)) carrinho = carrinhos.get(cpf);
+            carrinho.remover(p);
+            carrinhos.put(cpf, carrinho);
+        } catch (ProdutoNaoEncontradoException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
