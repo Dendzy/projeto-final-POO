@@ -1,5 +1,6 @@
 import exceptions.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class SistemaMercado implements MercadoInterface {
@@ -8,12 +9,20 @@ public class SistemaMercado implements MercadoInterface {
     private HashMap<String, Cliente> clientes;
     private HashMap<Integer, Pedido> pedidos;
     private HashMap<String, Carrinho> carrinhos;
+    private GerenciadorDeDados gerenciadorDeClientes = new GerenciadorDeDados();
+    private GerenciadorDeDados gerenciadorDeEstoque = new GerenciadorDeDados();
+    private GerenciadorDeDados gerenciadorDeCarrinhos = new GerenciadorDeDados();
+    private GerenciadorDeDados gerenciadorDePedidos = new GerenciadorDeDados();
 
     public SistemaMercado() {
         estoque = new Estoque();
         clientes = new HashMap<>();
         pedidos = new HashMap<>();
         carrinhos = new HashMap<>();
+        recuperarDadosEstoque();
+        recuperarDadosClientes();
+        recuperarPedidos();
+        recuperarCarrinhos();
     }
 
     @Override
@@ -98,6 +107,70 @@ public class SistemaMercado implements MercadoInterface {
 
     }
 
+    public void recuperarPedidos(){
+        try{
+            this.pedidos = gerenciadorDePedidos.recuperarPedidos();
+        }catch(IOException e){
+            System.err.println("Não foi possível recuperar os pedidos");
+        }
+    }
+
+    public void recuperarDadosEstoque(){
+        try{
+            estoque.setProdutos(gerenciadorDeEstoque.recuperarEstoque());
+        }catch(IOException e){
+            System.err.println("Não foi possível recuperar os dados do Estoque");
+        }
+    }
+
+    public void recuperarDadosClientes(){
+        try{
+           this.clientes = gerenciadorDeClientes.recuperarClientes();
+        }catch(IOException e){
+            System.err.println("Não foi possível recuperar os dados de Clientes");
+        }
+    }
+
+    public void recuperarCarrinhos(){
+        try{
+            this.carrinhos = gerenciadorDeCarrinhos.recuperarCarrinhos();
+        }catch (IOException e){
+            System.err.println("Não foi possível reuperar os Carrinhos");
+        }
+    }
+
+    public void salvarDadosCarrinhos(){
+        try{
+            gerenciadorDeCarrinhos.salvarCarrinhos(this.carrinhos);
+        }catch (IOException e){
+            System.err.println("Não foi possível salvar os Carrinhos");
+        }
+    }
+
+    public void salvarDadosEstoque(){
+        try{
+            gerenciadorDeEstoque.salvarEstoque(estoque.getProdutos());
+        }catch (IOException e){
+            System.err.println("Não foi possível salvar os dados do Estoque");
+        }
+    }
+
+    public void salvarDadosClientes(){
+        try{
+            gerenciadorDeClientes.salvarClientes(this.clientes);
+        }catch(IOException e){
+            System.err.println("Não foi possível salvar os dados de Clientes");
+        }
+    }
+
+    public void salvarPedidos(){
+        try{
+            gerenciadorDePedidos.salvarPedidos(this.pedidos);
+        }catch(IOException e){
+
+        }
+    }
+
     @Override
     public boolean produtoExisteNoEstoque(String nomeProduto) {
         return estoque.existeProdutoNoEstoque(nomeProduto);
@@ -105,5 +178,9 @@ public class SistemaMercado implements MercadoInterface {
 
     public Estoque getEstoque() {
         return estoque;
+    }
+
+    public HashMap<String, Cliente> getClientes() {
+        return clientes;
     }
 }

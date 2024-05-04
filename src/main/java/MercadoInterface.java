@@ -1,5 +1,7 @@
 import exceptions.*;
 
+import java.util.Map;
+
 public interface MercadoInterface {
     void cadastrarCliente(String nome, String cpf, String senha, String enderco, Carrinho carrinho) throws ClienteJaCadastradoException;
 
@@ -22,4 +24,6 @@ public interface MercadoInterface {
     boolean produtoExisteNoEstoque(String nomeProduto);
 
     void fecharPedido(String cpf);
+
+    Map<String, Cliente> getClientes();
 }

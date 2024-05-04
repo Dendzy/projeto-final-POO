@@ -37,4 +37,8 @@ public class Estoque {
     public Map<Integer, Produto> getProdutos() {
         return produtos;
     }
+
+    public void setProdutos(Map<Integer, Produto> produtos) {
+        this.produtos = produtos;
+    }
 }
