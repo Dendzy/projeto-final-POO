@@ -7,6 +7,8 @@ public interface MercadoInterface {
 
     Cliente pesquisarCliente(String cpf) throws ClienteNaoExisteException;
 
+    boolean existeCliente(String cpf);
+
     void removerCliente(String cpf) throws ClienteNaoExisteException;
 
     void editarCliente(String cpf, String novoNome, String novoEnderco) throws ClienteNaoExisteException;
