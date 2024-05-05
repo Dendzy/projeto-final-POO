@@ -7,6 +7,8 @@ public interface MercadoInterface {
 
     Cliente pesquisarCliente(String cpf) throws ClienteNaoExisteException;
 
+    boolean existeCliente(String cpf);
+
     void removerCliente(String cpf) throws ClienteNaoExisteException;
 
     void editarCliente(String cpf, String novoNome, String novoEnderco) throws ClienteNaoExisteException;
@@ -19,7 +21,7 @@ public interface MercadoInterface {
 
     int adicionarAoEstoque(TipoProduto tipo, String nome, double preco);
 
-    void removerDoEstoque(int idProduto);
+    boolean removerDoEstoque(int idProduto);
 
     boolean produtoExisteNoEstoque(String nomeProduto);
 

@@ -40,6 +40,12 @@ public class SistemaMercado implements MercadoInterface {
     }
 
     @Override
+    public boolean existeCliente(String cpf) {
+        if(clientes.containsKey(cpf)) return true;
+        return false;
+    }
+
+    @Override
     public void removerCliente(String cpf) throws ClienteNaoExisteException {
         if(!clientes.containsKey(cpf)) throw new ClienteNaoExisteException("Cliente não existe!");
         clientes.remove(cpf);
@@ -92,14 +98,14 @@ public class SistemaMercado implements MercadoInterface {
     }
 
     @Override
-    public void removerDoEstoque(int idProduto) {
+    public boolean removerDoEstoque(int idProduto) {
        try {
            Produto p = estoque.pegarProduto(idProduto);
-           estoque.removerProduto(p);
-       }catch(ProdutoNaoEncontradoException e){
+           return estoque.removerProduto(p);
+       } catch(ProdutoNaoEncontradoException e){
            System.err.println(e.getMessage());
        }
-
+    return false;
     }
 
     @Override

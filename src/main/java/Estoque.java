@@ -13,12 +13,11 @@ public class Estoque {
         produtos.put(p.getId(), p);
     }
 
-    public void removerProduto(Produto p) throws ProdutoNaoEncontradoException{
+    public boolean removerProduto(Produto p) throws ProdutoNaoEncontradoException{
        if(!existeProdutoNoEstoque(p.getNome()))
-            throw new ProdutoNaoEncontradoException("O produto " +p.getNome()+
-                    " não foi encontrado no estoque");
-
+            return false;
         produtos.remove(p.getId());
+        return true;
     }
 
     public Produto pegarProduto(int idProduto) throws ProdutoNaoEncontradoException{
