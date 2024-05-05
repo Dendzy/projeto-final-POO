@@ -28,6 +28,14 @@ public class Carrinho implements Serializable {
         return cont;
     }
 
+    public double calculaValorTotal(){
+        double valorTotal = 0;
+        for(Produto p: this.produtos){
+            valorTotal += p.getPreco();
+        }
+        return valorTotal;
+    }
+
     public void remover(Produto p) {
         produtos.remove(p);
     }
