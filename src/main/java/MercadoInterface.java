@@ -19,13 +19,19 @@ public interface MercadoInterface {
 
     int adicionarAoEstoque(TipoProduto tipo, String nome, double preco);
 
-    void removerDoEstoque(int idProduto);
+    boolean removerDoEstoque(int idProduto);
 
     boolean produtoExisteNoEstoque(String nomeProduto);
+
+    int contaProdutosIguaisNoEstoque(String nomeProduto);
 
     void salvarTodosOsDados();
 
     void fecharPedido(String cpf);
 
     Map<String, Cliente> getClientes();
+
+    Map<Integer, Produto> getProdutos();
+
+    boolean existeCliente(String cpf);
 }

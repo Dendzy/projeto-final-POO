@@ -6,6 +6,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
     private JButton clienteButton, gerenteButton;
     private JLabel clienteOuGerente;
     private MercadoInterface sistema;
+    private GerenteController gerenteController;
 
     public MenuPrincipal() {
 
@@ -19,7 +20,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 10, 10); // Espaçamento entre os componentes
+        gbc.insets = new Insets(10, 10, 10, 10);
 
         panel.setBackground(new Color(255, 255, 255));
 
@@ -45,31 +46,32 @@ public class MenuPrincipal extends JFrame implements ActionListener {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int centerX = (int) ((screenSize.getWidth() - getWidth()) / 2);
         int centerY = (int) ((screenSize.getHeight() - getHeight()) / 2);
-        setLocation(centerX, centerY); // Centraliza a janela na tela
+        setLocation(centerX, centerY);
 
         clienteButton.addActionListener(new ClienteController(this, sistema));
-        gerenteButton.addActionListener(this);
+        gerenteController = new GerenteController(this,sistema);
+        gerenteButton.addActionListener(e -> gerenteController.mostrar());
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
         JMenu cliente = new JMenu("Cliente");
         JMenu gerente = new JMenu("Gerente");
         cliente.addActionListener(e -> new ClienteController(this, sistema));
-        gerente.addActionListener(e -> new GerenteController());
         menuBar.add(cliente);
         menuBar.add(gerente);
 
         setVisible(true);
     }
 
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == clienteButton) {
             ClienteController clienteMenu = new ClienteController(this, sistema);
-        } else if (e.getSource() == gerenteButton) {
-            GerenteController gerenteMenu = new GerenteController();
         }
     }
 
+
     public static void main(String[] args) {
-        new MenuPrincipal();
+        MenuPrincipal menu = new MenuPrincipal();
+        menu.setVisible(true);
     }
 }

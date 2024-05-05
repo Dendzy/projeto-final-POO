@@ -1,4 +1,5 @@
 import exceptions.ClienteJaCadastradoException;
+import exceptions.ClienteNaoExisteException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,10 +72,51 @@ public class ClienteController implements ActionListener {
         janelaPrincipal.repaint();
     }
 
-    private void abrirPerfilCliente(Cliente cliente) {
-        // Implemente a lógica para abrir o perfil do cliente
-        // por exemplo: abra uma nova janela com os detalhes do cliente
-        // Você pode passar o objeto cliente para a nova janela
+    private void abrirLoginCliente(Cliente cliente) {
+        JFrame frameLogin = new JFrame("Login Cliente");
+        frameLogin.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frameLogin.setSize(300, 150);
+        frameLogin.setLocationRelativeTo(janelaPrincipal);
+
+        JPanel panel = new JPanel(new BorderLayout());
+
+        // Label e campo de texto para o nome do cliente
+        JLabel labelNomeCliente = new JLabel("Nome do Cliente: " + cliente.getNome());
+        panel.add(labelNomeCliente, BorderLayout.NORTH);
+
+        // Painel para o campo de senha
+        JPanel panelSenha = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel labelSenha = new JLabel("Senha:");
+        JPasswordField campoSenha = new JPasswordField(15);
+        panelSenha.add(labelSenha);
+        panelSenha.add(campoSenha);
+        panel.add(panelSenha, BorderLayout.CENTER);
+
+        // Botão de login
+        JButton botaoLogin = new JButton("Login");
+        botaoLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String senhaDigitada = new String(campoSenha.getPassword());
+                if (cliente.getSenha().equals(senhaDigitada)) {
+                    JOptionPane.showMessageDialog(frameLogin, "Senha válida! Ação executada.");
+                    frameLogin.dispose();
+                    try{
+                        new LojaController(janelaPrincipal,sistema,cliente.getCpf());
+                    }catch (ClienteNaoExisteException erro){
+                        System.err.println(erro.getMessage());
+                    }
+
+                    // Adicione aqui a ação que deseja executar após a validação da senha
+                } else {
+                    JOptionPane.showMessageDialog(frameLogin, "Senha inválida. Tente novamente.");
+                }
+            }
+        });
+        panel.add(botaoLogin, BorderLayout.SOUTH);
+
+        frameLogin.add(panel);
+        frameLogin.setVisible(true);
     }
 
     private void atualizaPerfis(JPanel painel) {
@@ -101,7 +143,7 @@ public class ClienteController implements ActionListener {
             // Adiciona um ActionListener para o botão
             button.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    abrirPerfilCliente(cliente);
+                    abrirLoginCliente(cliente);
                 }
             });
 
@@ -174,7 +216,7 @@ public class ClienteController implements ActionListener {
                 String senha = new String(txtSenha.getPassword());
 
                 try {
-                    sistema.cadastrarCliente(nome, cpf, endereco, senha, new Carrinho());
+                    sistema.cadastrarCliente(nome, cpf, senha, endereco, new Carrinho());
                     JOptionPane.showMessageDialog(frame, "Cliente cadastrado com sucesso!");
                     frame.dispose();
                     atualizaPerfis(panelClientes); // Atualiza os perfis de clientes após o cadastro

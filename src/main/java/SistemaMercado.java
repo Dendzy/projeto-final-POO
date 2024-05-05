@@ -2,6 +2,7 @@ import exceptions.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class SistemaMercado implements MercadoInterface {
 
@@ -31,6 +32,7 @@ public class SistemaMercado implements MercadoInterface {
             throw new ClienteJaCadastradoException("O cliente " + nome + " já está cadastrado");
         Cliente novoCliente = new Cliente(nome, cpf, senha, enderco, carrinho);
         clientes.put(cpf, novoCliente);
+        carrinhos.put(cpf,carrinho);
     }
 
     @Override
@@ -54,11 +56,22 @@ public class SistemaMercado implements MercadoInterface {
     }
 
     @Override
+    public boolean existeCliente(String cpf) {
+        if(clientes.containsKey(cpf)) return true;
+        return false;
+    }
+
+    @Override
     public void adicionarAoCarrinho(String cpf, int idProduto) {
         try {
             Produto p = estoque.pegarProduto(idProduto);
-            Carrinho carrinho = new Carrinho();
-            if (carrinhos.containsKey(cpf)) carrinho = carrinhos.get(cpf);
+            Carrinho carrinho;
+            if (carrinhos.containsKey(cpf)) {
+                carrinho = carrinhos.get(cpf);
+            } else {
+                // Se não houver um carrinho, cria um novo
+                carrinho = new Carrinho();
+            }
             carrinho.adicionar(p);
             carrinhos.put(cpf, carrinho);
         } catch (ProdutoNaoEncontradoException e) {
@@ -92,14 +105,18 @@ public class SistemaMercado implements MercadoInterface {
     }
 
     @Override
-    public void removerDoEstoque(int idProduto) {
-       try {
-           Produto p = estoque.pegarProduto(idProduto);
-           estoque.removerProduto(p);
-       }catch(ProdutoNaoEncontradoException e){
-           System.err.println(e.getMessage());
-       }
+    public boolean removerDoEstoque(int idProduto) {
+        try {
+            Produto p = estoque.pegarProduto(idProduto);
+            return estoque.removerProduto(p);
+        } catch(ProdutoNaoEncontradoException e){
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
 
+    public int contaProdutosIguaisNoEstoque(String nomeProduto){
+        return estoque.contaProdutosIguaisNoEstoque(nomeProduto);
     }
 
     @Override
@@ -191,4 +208,10 @@ public class SistemaMercado implements MercadoInterface {
     public HashMap<String, Cliente> getClientes() {
         return clientes;
     }
+
+    @Override
+    public Map<Integer, Produto> getProdutos() {
+        return estoque.getProdutos();
+    }
+
 }
