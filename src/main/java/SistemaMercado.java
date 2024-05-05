@@ -172,6 +172,14 @@ public class SistemaMercado implements MercadoInterface {
     }
 
     @Override
+    public void salvarTodosOsDados(){
+        salvarDadosCarrinhos();
+        salvarDadosEstoque();
+        salvarDadosClientes();
+        salvarPedidos();
+    }
+
+    @Override
     public boolean produtoExisteNoEstoque(String nomeProduto) {
         return estoque.existeProdutoNoEstoque(nomeProduto);
     }

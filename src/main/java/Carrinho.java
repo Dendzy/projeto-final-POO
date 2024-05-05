@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Carrinho {
+public class Carrinho implements Serializable {
     private List<Produto> produtos;
 
     public Carrinho(){

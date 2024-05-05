@@ -23,6 +23,8 @@ public interface MercadoInterface {
 
     boolean produtoExisteNoEstoque(String nomeProduto);
 
+    void salvarTodosOsDados();
+
     void fecharPedido(String cpf);
 
     Map<String, Cliente> getClientes();

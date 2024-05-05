@@ -23,40 +23,48 @@ public class ClienteController implements ActionListener {
         // Atualiza a lista de clientes
         clientes = sistema.getClientes().values();
 
-        // Define o layout do painel para uma grade
-        JPanel panel = new JPanel(new GridLayout(clientes.size() + 1, 1)); // +1 para incluir o botão de cadastro
+        // Define o layout do painel principal para BorderLayout
+        JPanel panelPrincipal = new JPanel(new BorderLayout());
 
+        // Painel para os botões dos clientes
+        JPanel panelClientes = new JPanel(new GridLayout(clientes.size(), 1));
+
+
+        // Adiciona os botões dos clientes ao painelClientes
+        atualizaPerfis(panelClientes);
+
+        // Painel para o botão de cadastro
+        JPanel panelCadastro = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton botaoCadastrarNovoCliente = new JButton("Cadastre-se");
+        botaoCadastrarNovoCliente.setPreferredSize(new Dimension(150, 50));
         botaoCadastrarNovoCliente.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                exibeFormulario(panel);
-
+                exibeFormulario(panelClientes);
             }
         });
 
-        panel.add(botaoCadastrarNovoCliente);
+        JButton botaoVoltarMenuPrincipal = new JButton("Voltar");
+        botaoVoltarMenuPrincipal.setPreferredSize(new Dimension(150, 50));
+        botaoVoltarMenuPrincipal.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                sistema.salvarTodosOsDados();
+                janelaPrincipal.dispose();
 
-        // Itera sobre a lista de clientes
-        for (Cliente cliente : clientes) {
-            // Cria um botão para o cliente atual
-            JButton button = new JButton(cliente.getNome());
+                // Abre novamente a janela do menu principal
+                MenuPrincipal menuPrincipal = new MenuPrincipal();
+                menuPrincipal.setVisible(true);
+            }
+        });
 
-            // Adiciona um ActionListener para o botão
-            button.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    // Lida com a ação quando o botão é clicado
-                    // Por exemplo, abra o perfil do cliente em uma nova janela
-                    abrirPerfilCliente(cliente);
+        panelCadastro.add(botaoVoltarMenuPrincipal);
+        panelCadastro.add(botaoCadastrarNovoCliente);
 
-                }
-            });
+        // Adiciona os painéis ao painel principal
+        panelPrincipal.add(panelClientes, BorderLayout.CENTER);
+        panelPrincipal.add(panelCadastro, BorderLayout.SOUTH);
 
-            // Adiciona o botão ao painel
-            panel.add(button);
-        }
-
-        // Adiciona o painel ao frame
-        janelaPrincipal.add(panel);
+        // Adiciona o painel principal ao frame
+        janelaPrincipal.add(panelPrincipal);
 
         // Redimensiona e redesenha o frame
         janelaPrincipal.revalidate();
@@ -69,12 +77,26 @@ public class ClienteController implements ActionListener {
         // Você pode passar o objeto cliente para a nova janela
     }
 
-    private void atualizaPerfis(JPanel painel){
-        clientes = sistema.getClientes().values();
+    private void atualizaPerfis(JPanel painel) {
+        // Limpa o painel
         painel.removeAll();
+
+        // Cria um novo painel para centralizar os botões
+        JPanel panelCentralizado = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(5, 5, 5, 5); // Adiciona um espaçamento entre os botões
+
+        // Obtém a lista de clientes do sistema
+        clientes = sistema.getClientes().values();
+
+        // Adiciona os botões dos clientes ao painel centralizado
         for (Cliente cliente : clientes) {
             // Cria um botão para o cliente atual
             JButton button = new JButton(cliente.getNome());
+            button.setPreferredSize(new Dimension(150, 50));
 
             // Adiciona um ActionListener para o botão
             button.addActionListener(new ActionListener() {
@@ -83,12 +105,20 @@ public class ClienteController implements ActionListener {
                 }
             });
 
-            // Adiciona o botão ao painel
-            painel.add(button);
+            // Adiciona o botão ao painel centralizado
+            panelCentralizado.add(button, gbc);
+            gbc.gridx++; // Incrementa o índice da coluna para adicionar o próximo botão ao lado
         }
+
+        // Adiciona o painel centralizado ao centro do painel principal
+        painel.add(panelCentralizado);
+
+        // Redimensiona e redesenha o painel
+        painel.revalidate();
+        painel.repaint();
     }
 
-    private void exibeFormulario(JPanel painelDeClientes) {
+    private void exibeFormulario(JPanel panelClientes) {
         JFrame frame = new JFrame("Formulário de Cadastro");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -145,9 +175,9 @@ public class ClienteController implements ActionListener {
 
                 try {
                     sistema.cadastrarCliente(nome, cpf, endereco, senha, new Carrinho());
-                    JOptionPane.showMessageDialog(frame,"Cliente cadastrado com sucesso!");
+                    JOptionPane.showMessageDialog(frame, "Cliente cadastrado com sucesso!");
                     frame.dispose();
-                    atualizaPerfis(painelDeClientes);
+                    atualizaPerfis(panelClientes); // Atualiza os perfis de clientes após o cadastro
                 } catch (ClienteJaCadastradoException erro) {
                     JOptionPane.showMessageDialog(frame, erro.getMessage());
                 }
@@ -155,7 +185,7 @@ public class ClienteController implements ActionListener {
         });
 
         // Adicionando botão de cadastro ao painel
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.gridwidth = 2;
         formPanel.add(btnCadastrar, gbc);
