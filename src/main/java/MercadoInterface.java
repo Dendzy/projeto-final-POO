@@ -7,8 +7,6 @@ public interface MercadoInterface {
 
     Cliente pesquisarCliente(String cpf) throws ClienteNaoExisteException;
 
-    boolean existeCliente(String cpf);
-
     void removerCliente(String cpf) throws ClienteNaoExisteException;
 
     void editarCliente(String cpf, String novoNome, String novoEnderco) throws ClienteNaoExisteException;
@@ -25,9 +23,15 @@ public interface MercadoInterface {
 
     boolean produtoExisteNoEstoque(String nomeProduto);
 
+    int contaProdutosIguaisNoEstoque(String nomeProduto);
+
     void salvarTodosOsDados();
 
-    void fecharPedido(String cpf);
+    Pedido fecharPedido(String cpf);
 
     Map<String, Cliente> getClientes();
+
+    Map<Integer, Produto> getProdutos();
+
+    boolean existeCliente(String cpf);
 }

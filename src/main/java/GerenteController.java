@@ -31,11 +31,13 @@ public class GerenteController extends JFrame{
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel();
+        adicionarProdutoButton = new JButton("Adicionar Produto ao Estoque");
         buscaProdutoButton = new JButton("Verificar Produto no Estoque");
         removerProdutoButton = new JButton("Remover Produto");
         buscaClienteButton = new JButton("Buscar Cliente");
         adicionarClienteButton = new JButton("Adicionar Cliente");
         removerClienteButton = new JButton("Remover Cliente");
+        panel.add(adicionarProdutoButton);
         panel.add(buscaProdutoButton);
         panel.add(removerProdutoButton);
         panel.add(buscaClienteButton);
@@ -53,7 +55,7 @@ public class GerenteController extends JFrame{
         });
 
         adicionarProdutoButton.addActionListener(e -> {
-
+            janelaProduto janela = new janelaProduto(janelaPrincipal, sistema);
         });
 
         removerProdutoButton.addActionListener(e -> {
@@ -127,7 +129,7 @@ public class GerenteController extends JFrame{
             painelNome.add(nome);
             painelNome.add(nomeField);
 
-            JLabel preco = new JLabel("Preço do remédio: ");
+            JLabel preco = new JLabel("Preço do produto: ");
             JTextField precoField = new JTextField(30);
             precoField.setText("0");
             painelPreco.add(preco);
@@ -176,6 +178,7 @@ public class GerenteController extends JFrame{
                 sistema.adicionarAoEstoque(categoriaSelecionada,nomeProduto,precoUser);
             });
             cancelar.addActionListener(e -> cancelar());
+            this.setVisible(true);
         }
         static {
             mapaCategoria.put("Eletrodoméstico", TipoProduto.ELETRODOMESTICO);

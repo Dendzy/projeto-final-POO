@@ -27,6 +27,10 @@ public class Cliente implements Serializable {
         return cpf;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
     public String getEndereco() {
         return endereco;
     }
