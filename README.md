@@ -14,8 +14,19 @@
 
 <h2>Como funciona o Sistema Mercado?</h2>
 <p>
-  Nosso sistema possui como classe principal o <i>SistemaMercado.java</i>, que lida diretamente com todas as outras classe e é a responsável pelo controle e gerenciamento do Sistema geral.
+  Nosso sistema possui como classe principal o <i>SistemaMercado.java</i>, que lida diretamente com todas as outras classe e é a responsável pelo controle e gerenciamento do Sistema geral. O projeto visa fazer de forma semelhante ao mercado digital.
 </p>
+<p>
+  Nesse aspecto, temos 2 usuários, o Cliente e o Gerente, ambos tem suas funções e o que podem fazer ou não no sistema.
+</p>
+<p>
+  O cliente por exemplo vai ter seu próprio carrinho, vai conseguir colocar no carrinho os produtos que deseja e por fim finalizar o pedido.
+</p>
+
+<p>
+  O gerente por outro lado pode ver o estoque diretamente, consegue adicionar produtos ao estoque, remover e buscar cliente.
+</p>
+
 <p>
   As funcionalidades do Sistema são as seguintes:
 </p>
